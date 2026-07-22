@@ -7,10 +7,6 @@ LABEL org.opencontainers.image.description="Personal UBI 9 development base imag
 LABEL org.opencontainers.image.source="https://github.com/${REPO_OWNER}/base-devcontainer-image"
 LABEL org.opencontainers.image.licenses="MIT"
 
-ARG USERNAME=user
-ARG USER_UID=1000
-ARG USER_GID=1000
-
 # Install all needed packages at build time as root.
 RUN dnf install -y \
   git \
@@ -23,29 +19,11 @@ RUN dnf install -y \
   && dnf clean all \
   && rm -rf /var/cache/dnf
 
-RUN if ! getent group "${USER_GID}" >/dev/null; then \
-  groupadd --gid "${USER_GID}" "${USERNAME}"; \
-  fi \
-  && if ! id -u "${USERNAME}" >/dev/null 2>&1; then \
-  useradd \
-  --uid "${USER_UID}" \
-  --gid "${USER_GID}" \
-  --create-home \
-  --shell /usr/bin/zsh \
-  "${USERNAME}"; \
-  fi
+# Install mise globally so every project/user can use it.
+RUN curl https://mise.run | sh
 
 RUN mkdir -p /workspaces \
-  && chown -R "${USERNAME}:${USERNAME}" /workspaces
-
-USER ${USERNAME}
-
-RUN mkdir -p "$HOME/.local/bin" \
-  && curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh
-
-USER root
-
-ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
+  && chmod 0777 /workspaces
 
 WORKDIR /workspaces
 
