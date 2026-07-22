@@ -43,6 +43,8 @@ USER ${USERNAME}
 RUN mkdir -p "$HOME/.local/bin" \
   && curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh
 
+USER root
+
 ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
 
 WORKDIR /workspaces
