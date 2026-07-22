@@ -12,27 +12,19 @@ ARG USER_UID=1000
 ARG USER_GID=1000
 
 # Install all needed packages at build time as root.
+RUN dnf copr enable jdxcode/mise
 RUN dnf install -y \
   git \
   zsh \
   curl \
   neovim \
-  fzf \
-  zoxide \
-  bat \
-  eza \
-  ripgrep \
   mise \
   wget \
   unzip \
   openssh-clients \
-  findutils \
-  which \
   procps-ng \
   hostname \
   util-linux \
-  shadow-utils \
-  ca-certificates \
   && dnf clean all \
   && rm -rf /var/cache/dnf
 
