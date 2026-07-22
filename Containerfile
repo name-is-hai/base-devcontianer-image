@@ -30,14 +30,11 @@ RUN groupadd --gid 1000 "${USERNAME}" \
   "${USERNAME}"
 
 # Install mise globally so every project/user can use it.
-RUN curl -fsSL https://mise.run \
-  | MISE_INSTALL_PATH=/usr/local/bin/mise sh
+COPY --from=jdxcode/mise /usr/local/bin/mise /usr/local/bin/
 
 RUN mkdir -p /workspaces \
   && chown "${USERNAME}":"${USERNAME}" /workspaces \
   && chmod 0755 /workspaces
-
-# USER root
 
 WORKDIR /workspaces
 
