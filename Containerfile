@@ -15,7 +15,6 @@ ARG USER_GID=1000
 RUN dnf install -y \
   git \
   zsh \
-  curl \
   wget \
   unzip \
   openssh-clients \
