@@ -36,6 +36,8 @@ RUN mkdir -p /workspaces \
   && chown "${USERNAME}":"${USERNAME}" /workspaces \
   && chmod 0755 /workspaces
 
+USER root
+
 WORKDIR /workspaces
 
 CMD ["/usr/bin/zsh"]
