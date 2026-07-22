@@ -4,6 +4,9 @@ on:
   push:
     branches:
       - master
+    paths:
+      - ".github/workflows/build-ubi9-dev.yml"
+      - "Containerfile"
   workflow_dispatch:
 
 permissions:

@@ -19,26 +19,14 @@ This image is meant to be a clean development base image for tools like DevPod, 
 It includes common Linux development tools only, such as:
 
 ```txt
-git 
-zsh 
-curl
-neovim 
-fzf 
-zoxide 
-bat 
-eza 
-ripgrep 
-mise 
+git
+zsh
 wget 
 unzip 
 openssh-clients 
-findutils 
-which 
 procps-ng 
-hostname 
-util-linux 
-shadow-utils 
-ca-certificates 
+hostname
+mise
 ```
 
 Project-specific runtimes should not be baked into this base image. Install them per project instead.
