@@ -17,7 +17,6 @@ RUN dnf install -y \
   zsh \
   curl \
   neovim \
-  mise \
   wget \
   unzip \
   openssh-clients \
