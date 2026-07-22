@@ -11,8 +11,15 @@ ARG USERNAME=user
 ARG USER_UID=1000
 ARG USER_GID=1000
 
-# Install all needed packages at build time as root.
-RUN dnf copr enable jdxcode/mise
+# Install DNF plugins first so "dnf copr" exists.
+RUN dnf install -y dnf-plugins-core \
+  && dnf clean all \
+  && rm -rf /var/cache/dnf
+
+# Enable mise COPR non-interactively.
+RUN dnf copr enable -y jdxcode/mise
+
+# Install common dev packages.
 RUN dnf install -y \
   git \
   zsh \
