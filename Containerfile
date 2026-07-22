@@ -1,6 +1,7 @@
 FROM registry.access.redhat.com/ubi9/ubi:9.8-1784625744
 
 ARG REPO_OWNER
+ARG USERNAME=dev
 
 LABEL org.opencontainers.image.title="ubi9-dev"
 LABEL org.opencontainers.image.description="Personal UBI 9 development base image for DevPod/devcontainer-style development"
@@ -19,11 +20,21 @@ RUN dnf install -y \
   && dnf clean all \
   && rm -rf /var/cache/dnf
 
+# Generic user required for Podman keep-id and DevPod setup.
+RUN groupadd --gid 1000 "${USERNAME}" \
+  && useradd \
+  --uid 1000 \
+  --gid 1000 \
+  --create-home \
+  --shell /usr/bin/zsh \
+  "${USERNAME}"
+
 # Install mise globally so every project/user can use it.
 RUN curl https://mise.run | sh
 
 RUN mkdir -p /workspaces \
-  && chmod 0777 /workspaces
+  && chown "${USERNAME}":"${USERNAME}" /workspaces \
+  && chmod 0755 /workspaces
 
 WORKDIR /workspaces
 
