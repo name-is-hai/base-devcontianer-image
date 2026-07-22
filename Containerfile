@@ -8,18 +8,11 @@ LABEL org.opencontainers.image.description="Personal UBI 9 development base imag
 LABEL org.opencontainers.image.source="https://github.com/${REPO_OWNER}/base-devcontainer-image"
 LABEL org.opencontainers.image.licenses="MIT"
 
-RUN dnf install -y \
-      https://dl.fedoraproject.org/pub/epel/epel-release-latest-9.noarch.rpm \
- && dnf upgrade -y \
- && dnf clean all \
- && rm -rf /var/cache/dnf
-
 # Install all needed packages at build time as root.
 RUN dnf install -y \
   git \
   gcc-c++ \
   make \
-  neovim \
   cmake \
   gcc \
   zsh \
@@ -28,6 +21,13 @@ RUN dnf install -y \
   openssh-clients \
   procps-ng \
   hostname \
+  && dnf clean all \
+  && rm -rf /var/cache/dnf
+
+RUN dnf copr enable -y agriffis/neovim-nightly \
+  && dnf install -y \
+  neovim \
+  python3-neovim \
   && dnf clean all \
   && rm -rf /var/cache/dnf
 
