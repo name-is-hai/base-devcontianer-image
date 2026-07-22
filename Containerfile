@@ -24,14 +24,18 @@ RUN dnf install -y \
   && dnf clean all \
   && rm -rf /var/cache/dnf
 
-RUN dnf copr enable -y agriffis/neovim-nightly \
-  && dnf install -y \
-  neovim \
-  python3-neovim \
+RUN dnf install -y \
+  python3 \
+  python3-pip \
+  && curl -fsSL \
+  "https://github.com/neovim/neovim/releases/download/v0.11.7/nvim-linux-x86_64.tar.gz" \
+  -o /tmp/nvim.tar.gz \
+  && tar -C /opt -xzf /tmp/nvim.tar.gz \
+  && ln -snf /opt/nvim-linux-x86_64/bin/nvim /usr/local/bin/nvim \
+  && rm -f /tmp/nvim.tar.gz \
   && dnf clean all \
-  && rm -rf /var/cache/dnf
+  && rm -rf /var/cache/dnf# Generic user required for Podman keep-id and DevPod setup.
 
-# Generic user required for Podman keep-id and DevPod setup.
 RUN groupadd --gid 1000 "${USERNAME}" \
   && useradd \
   --uid 1000 \
