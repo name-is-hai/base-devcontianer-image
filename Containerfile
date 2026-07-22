@@ -16,13 +16,11 @@ RUN dnf install -y \
   git \
   zsh \
   curl \
-  neovim \
   wget \
   unzip \
   openssh-clients \
   procps-ng \
   hostname \
-  util-linux \
   && dnf clean all \
   && rm -rf /var/cache/dnf
 
