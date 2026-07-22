@@ -11,15 +11,7 @@ ARG USERNAME=user
 ARG USER_UID=1000
 ARG USER_GID=1000
 
-# Install DNF plugins first so "dnf copr" exists.
-RUN dnf install -y dnf-plugins-core \
-  && dnf clean all \
-  && rm -rf /var/cache/dnf
-
-# Enable mise COPR non-interactively.
-RUN dnf copr enable -y jdxcode/mise
-
-# Install common dev packages.
+# Install all needed packages at build time as root.
 RUN dnf install -y \
   git \
   zsh \
@@ -51,6 +43,12 @@ RUN mkdir -p /workspaces \
   && chown -R "${USERNAME}:${USERNAME}" /workspaces
 
 USER ${USERNAME}
+
+RUN mkdir -p "$HOME/.local/bin" \
+  && curl -fsSL https://mise.run | MISE_INSTALL_PATH="$HOME/.local/bin/mise" sh
+
+ENV PATH="/home/${USERNAME}/.local/bin:${PATH}"
+
 WORKDIR /workspaces
 
 CMD ["/usr/bin/zsh"]
